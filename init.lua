@@ -19,5 +19,8 @@ vim.opt.rtp:prepend(lazypath)
 -- Basic options
 require("config.options")
 
+-- Color Theme
+require("colors.rukiyo")
+
 -- Initialize lazy.nvim
 require("lazy").setup("plugins")
