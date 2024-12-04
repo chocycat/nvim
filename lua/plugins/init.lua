@@ -48,7 +48,7 @@ return {
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     keys = {
       { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file explorer" },
-      { "<leader>E", "<cmd>NvimTreeFocus<cr>", desc = "Focus file explorer" },
+      { "<leader>E", "<cmd>NvimTreeFocus<cr>",  desc = "Focus file explorer" },
     },
     opts = {
       git = {
@@ -112,7 +112,7 @@ return {
         end,
         desc = "Close other buffers (safe)",
       },
-      { "<leader>bb", "<cmd>BufferLinePick<cr>", desc = "Pick buffer" },
+      { "<leader>bb", "<cmd>BufferLinePick<cr>",      desc = "Pick buffer" },
       {
         "<leader>bc",
         function()
@@ -124,11 +124,11 @@ return {
         desc = "Pick buffer to close (safe)",
       },
 
-      { "<leader>[", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
-      { "<leader>]", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+      { "<leader>[",  "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
+      { "<leader>]",  "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
 
-      { "<leader>b[", "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer left" },
-      { "<leader>b]", "<cmd>BufferLineMoveNext<cr>", desc = "Move buffer right" },
+      { "<leader>b[", "<cmd>BufferLineMovePrev<cr>",  desc = "Move buffer left" },
+      { "<leader>b]", "<cmd>BufferLineMoveNext<cr>",  desc = "Move buffer right" },
     },
     opts = {
       options = {
@@ -188,7 +188,7 @@ return {
     cmd = "Telescope",
     keys = {
       { "<leader>bb", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
-      { "<leader>,", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Switch Buffer" },
+      { "<leader>,",  "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Switch Buffer" },
     },
     opts = {
       defaults = {
@@ -368,8 +368,8 @@ return {
       })
 
       -- setup servers
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
       local lspconfig = require("lspconfig")
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
 
       for server, config in pairs(servers) do
         lspconfig[server].setup(vim.tbl_extend("force", {
@@ -378,6 +378,120 @@ return {
         }, config))
       end
     end,
+  },
+
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-cmdline",
+      "saadparwaiz1/cmp_luasnip",
+
+      -- snippets
+      {
+        "L3MON4D3/LuaSnip",
+        dependencies = {
+          "rafamadriz/friendly-snippets"
+        },
+        config = function()
+          require("luasnip.loaders.from_vscode").lazy_load()
+        end
+      },
+
+      "onsails/lspkind.nvim"
+    },
+    config = function()
+      local cmp = require("cmp")
+      local luasnip = require("luasnip")
+      local lspkind = require("lspkind")
+
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end
+        },
+
+        window = {
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
+        },
+
+        mapping = cmp.mapping.preset.insert({
+          ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+          ['<C-Esc>'] = cmp.mapping({
+            i = function(fallback)
+              if cmp.visible() then
+                cmp.abort()
+              else
+                fallback()
+              end
+            end
+          }),
+
+          ['<C-j>'] = cmp.mapping.select_next_item(),
+          ['<C-k>'] = cmp.mapping.select_prev_item(),
+          ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-d>'] = cmp.mapping.scroll_docs(4),
+
+          ['<C-n>'] = cmp.mapping.complete(),
+
+          ['<C-l>'] = cmp.mapping(function(fallback)
+            if luasnip.expand_or_jumpable() then
+              luasnip.expand_or_jump()
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+          ['<C-h>'] = cmp.mapping(function(fallback)
+            if luasnip.jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { 'i', 's' })
+        }),
+        sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+          { name = 'buffer' },
+          { name = 'path' },
+        }),
+        formatting = {
+          format = lspkind.cmp_format({
+            mode = 'symbol_text',
+            maxwidth = 50,
+            ellipsis_char = '...',
+            menu = {
+              buffer = "[Buf]",
+              nvim_lsp = "[LSP]",
+              luasnip = "[Snip]",
+              path = "[Path]"
+            }
+          })
+        },
+        experimental = {
+          ghost_text = true
+        }
+      })
+
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'path' },
+          { name = 'cmdline' }
+        })
+      })
+
+      cmp.setup.cmdline('/', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'buffer' }
+        })
+      })
+    end
   },
 
   {
@@ -399,4 +513,20 @@ return {
       end
     end,
   },
+
+  -- Hints
+
+  {
+    'folke/which-key.nvim',
+    event = "VeryLazy",
+    keys = {
+      {
+        "<leader>?",
+        function()
+          require("which-key").show({ global = false })
+        end,
+        desc = "Buffer Local Keymaps (which-key)",
+      },
+    },
+  }
 }

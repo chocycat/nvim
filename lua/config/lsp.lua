@@ -10,8 +10,9 @@ M.on_attach = function(client, bufnr)
   vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
   vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-  vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, opts)
+  vim.keymap.set("n", "<leader>T", vim.lsp.buf.type_definition, opts)
   vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+  vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
   vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
   vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
   vim.keymap.set("n", "<leader>f", function()
@@ -45,9 +46,27 @@ M.servers = {
       },
     },
   },
-  gopls = {},
   html = {},
   cssls = {},
+  clangd = {
+    cmd = {
+      "clangd",
+      "--background-index",
+      "--clang-tidy",
+      "--clang-tidy-checks=*",
+      "--header-insertion=iwyu",
+      "--completion-style=detailed",
+      "--function-arg-placeholders",
+      "--fallback-style=llvm"
+    },
+    init_options = {
+      usePlaceholders = true,
+      completeUnimported = true,
+      clangdFileStatus = true,
+    }
+  },
+  cmake = {},
+  mesonlsp = {}
 }
 
 return M
