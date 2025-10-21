@@ -1,7 +1,3 @@
--- Set leader key to space
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
 -- Load lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -17,10 +13,13 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Basic options
-require("config.options")
+require("config")
 
 -- Color Theme
-require("colors.rukiyo")
+require("theme")
+
+-- LSP
+require("lsp")
 
 -- Initialize lazy.nvim
 require("lazy").setup("plugins")
