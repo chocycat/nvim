@@ -1,5 +1,5 @@
 return {
-  cmd = { vim.fn.expand('~/.elspy/downloads/lua_language_server/bin/lua-language-server'), '--stdio' },
+  cmd = { 'elspy', 'run', 'lua-language-server' },
   filetypes = { 'lua' },
   settings = {
     Lua = {

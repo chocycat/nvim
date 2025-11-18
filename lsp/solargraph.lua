@@ -1,4 +1,4 @@
 return {
-  cmd = { "solargraph", "stdio" },
+  cmd = { 'elspy', 'run', 'solargraph' },
   filetypes = { 'ruby' }
 }

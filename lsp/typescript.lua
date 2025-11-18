@@ -1,4 +1,4 @@
 return {
-  cmd = { 'typescript-language-server', '--stdio' },
+  cmd = { 'elspy', 'run', 'typescript-language-server' },
   filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' }
 }
