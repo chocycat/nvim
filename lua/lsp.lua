@@ -19,6 +19,7 @@ vim.diagnostic.enable();
 
 vim.lsp.enable('lua')
 vim.lsp.enable('typescript')
-vim.lsp.enable('vue')
 vim.lsp.enable('unocss')
 vim.lsp.enable('biome')
+vim.lsp.enable('solargraph')
+vim.lsp.enable('rust')

@@ -14,37 +14,27 @@ return {
 
   -- Projects
   {
-    "chocycat/reitti.nvim",
+    'chocycat/reitti.nvim',
     dependencies = { "nvim-telescope/telescope.nvim" },
+    event = "VeryLazy",
+    cmd = { "WorkspaceAdd", "WorkspaceRemove", "WorkspaceList", "WorkspaceRestore", "WorkspaceSave" },
     keys = {
       {
-        "<leader>pp",
+        "<leader>wA",
         function()
-          require("telescope").extensions.reitti.projects()
+          require("reitti").add_workspace(nil, nil)
         end,
-        { desc = "Switch projects" },
+        { desc = "Add current directory to workspaces" },
       },
       {
-        "<leader>pA",
+        "<leader>wp",
         function()
-          require("reitti.core.project").add_project(vim.fn.getcwd())
+          require("reitti.telescope").pick()
         end,
-        { desc = "Add current directory to projects" },
-      },
+        { desc = "Open workspace picker" }
+      }
     },
-    config = function()
-      require("reitti").setup({
-        auto_discover = {
-          enabled = true,
-          paths = {},
-        },
-        hooks = {
-          after_switch = function()
-            require("nvim-tree.api").tree.open()
-          end,
-        },
-      })
-    end,
+    opts = {},
   },
 
   -- File explorer
@@ -331,4 +321,3 @@ return {
     }
   },
 }
-

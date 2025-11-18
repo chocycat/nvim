@@ -166,4 +166,3 @@ set_hl("DiagnosticFloatingHint", { fg = colors.base0C, bg = colors.base01 })
 set_hl("NvimTreeFolderIcon", { fg = colors.base0E })
 set_hl("NvimTreeFolderName", { fg = colors.base05 })
 set_hl("NvimTreeNormal", { fg = colors.base06 })
-
