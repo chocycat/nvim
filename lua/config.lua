@@ -35,6 +35,12 @@ vim.opt.clipboard = "unnamedplus"                                      -- Use sy
 
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { silent = true }) -- Clear highlight on <Esc>
 
+-- remove ~
+vim.opt.fillchars = { eob = " " }
+
+-- remove mode display
+vim.opt.showmode = false
+
 if vim.g.neovide then
   vim.o.guifont = "Fairfax Hax:h13"
   vim.g.neovide_padding_top = 8

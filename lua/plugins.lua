@@ -99,6 +99,95 @@ return {
     },
   },
 
+  -- Line
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      local colors = require('colors')
+      require('lualine').setup({
+        options = {
+          icons_enabled = false,
+          theme = {
+            normal = {
+              a = { bg = colors.base02, fg = colors.base06, gui = 'bold' },
+              b = { bg = colors.base01, fg = colors.base05 },
+              c = { bg = colors.base00, fg = colors.base05 },
+            },
+            insert = {
+              a = { bg = colors.base10, fg = colors.base00, gui = 'bold' },
+              b = { bg = colors.base01, fg = colors.base05 },
+              c = { bg = colors.base00, fg = colors.base05 },
+            },
+            visual = {
+              a = { bg = colors.base05, fg = colors.base00, gui = 'bold' },
+              b = { bg = colors.base01, fg = colors.base05 },
+              c = { bg = colors.base00, fg = colors.base05 },
+            },
+            replace = {
+              a = { bg = colors.base10, fg = colors.base00, gui = 'bold' },
+              b = { bg = colors.base01, fg = colors.base05 },
+              c = { bg = colors.base00, fg = colors.base05 },
+            },
+            command = {
+              a = { bg = colors.base11, fg = colors.base00, gui = 'bold' },
+              b = { bg = colors.base01, fg = colors.base05 },
+              c = { bg = colors.base00, fg = colors.base05 },
+            },
+            inactive = {
+              a = { bg = colors.base00, fg = colors.base05, gui = 'bold' },
+              b = { bg = colors.base00, fg = colors.base05 },
+              c = { bg = colors.base00, fg = colors.base05 },
+            },
+          },
+          component_separators = { left = '', right = '' },
+          section_separators = { left = '', right = '' },
+          ignore_focus = {},
+          always_divide_middle = true,
+          globalstatus = true,
+          refresh = {
+            statusline = 1000,
+            tabline = 1000,
+            winbar = 1000,
+            refresh_time = (1 / 60) * 1000,
+            events = {
+              'WinEnter',
+              'BufEnter',
+              'BufWritePost',
+              'SessionLoadPost',
+              'FileChangedShellPost',
+              'VimResized',
+              'Filetype',
+              'CursorMoved',
+              'CursorMovedI',
+              'ModeChanged',
+            },
+          }
+        },
+        sections = {
+          lualine_a = { 'mode' },
+          lualine_b = { 'diagnostics' },
+          lualine_c = { 'filename' },
+          lualine_x = { 'filetype' },
+          lualine_y = { 'progress' },
+          lualine_z = { 'location' }
+        },
+        inactive_sections = {
+          lualine_a = {},
+          lualine_b = {},
+          lualine_c = { 'filename' },
+          lualine_x = { 'location' },
+          lualine_y = {},
+          lualine_z = {}
+        },
+        tabline = {},
+        winbar = {},
+        inactive_winbar = {},
+        extensions = {},
+      })
+    end
+  },
+
   -- Safely remove buffers
   {
     "echasnovski/mini.bufremove",
